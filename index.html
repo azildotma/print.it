@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>azil.ma | Print Production & Graphic Design — Agadir, Morocco</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -22,9 +22,12 @@
             --font-heading: 'Space Grotesk', 'Inter', sans-serif;
             --font-body: 'Inter', sans-serif;
             --font-mono: 'IBM Plex Mono', monospace;
+            --font-ar: 'Cairo', 'Inter', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
@@ -34,9 +37,36 @@
             overflow-x: hidden;
         }
 
+        /* Arabic mode: swap every font role to Cairo, since it's the only face here with Arabic glyphs */
+        body.lang-ar { font-family: var(--font-ar); }
+        body.lang-ar h1, body.lang-ar h2, body.lang-ar h3,
+        body.lang-ar h4, body.lang-ar h5, body.lang-ar .logo {
+            font-family: var(--font-ar);
+        }
+        body.lang-ar .hero-tag,
+        body.lang-ar .ticket-header,
+        body.lang-ar .spec-list li span:first-child,
+        body.lang-ar .spec-box .spec-label,
+        body.lang-ar footer,
+        body.lang-ar .price-note {
+            font-family: var(--font-ar);
+            letter-spacing: normal;
+        }
+
         a { text-decoration: none; color: inherit; }
 
         ::selection { background: var(--primary); color: #fff; }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; scroll-behavior: auto !important; }
+        }
 
         /* Registration mark + crop mark motifs — the print production signature */
         .reg-mark {
@@ -78,6 +108,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -89,6 +121,27 @@
 
         .logo span { color: var(--primary); }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Cairo', 'Inter', sans-serif;
+            transition: 0.25s ease;
+        }
+
+        .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+
         .nav-btn {
             background: var(--primary);
             color: #fff;
@@ -99,6 +152,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            border: none;
+            cursor: pointer;
         }
 
         .nav-btn:hover { background: var(--primary-dark); }
@@ -136,6 +191,8 @@
             margin-bottom: 1.5rem;
             letter-spacing: -0.5px;
         }
+
+        body.lang-ar .hero h1 { letter-spacing: normal; }
 
         .hero p {
             color: var(--text-muted);
@@ -459,6 +516,7 @@
         @media (max-width: 768px) {
             .ticket-card { grid-template-columns: 1fr; }
             .spec-list li { grid-template-columns: 100px 1fr; }
+            header { padding: 1rem 6%; }
         }
     </style>
 </head>
@@ -466,20 +524,23 @@
 
     <header>
         <div class="logo">azil<span>.ma</span></div>
-        <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20want%20to%20inquire%20about%20your%20design%20and%20printing%20services." class="nav-btn" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i> Contact Us
-        </a>
+        <div class="header-actions">
+            <button class="lang-btn" id="langToggle" onclick="toggleLang()" aria-label="Switch language / تبديل اللغة">العربية</button>
+            <a href="#" class="nav-btn" data-wa-en="Hello azil.ma, I want to inquire about your design and printing services." data-wa-ar="مرحبًا azil.ma، أريد الاستفسار عن خدمات التصميم والطباعة لديكم." target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> <span data-i18n="contact">Contact Us</span>
+            </a>
+        </div>
     </header>
 
     <section class="hero">
-        <div class="hero-tag"><i class="fa-solid fa-crosshairs"></i> Design & Print Production • Agadir, Morocco</div>
-        <h1>From Vector File to Finished Print, Done Right</h1>
-        <p>Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.</p>
+        <div class="hero-tag"><i class="fa-solid fa-crosshairs"></i> <span data-i18n="hero-tag">Design & Print Production • Agadir, Morocco</span></div>
+        <h1 data-i18n="hero-h1">From Vector File to Finished Print, Done Right</h1>
+        <p data-i18n="hero-p">Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.</p>
         <div class="cta-group">
-            <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20would%20like%20to%20get%20a%20quote%20for%20a%20design%20project." class="nav-btn" target="_blank">
-                <i class="fa-brands fa-whatsapp"></i> Request a Quote
+            <a href="#" class="nav-btn" data-wa-en="Hello azil.ma, I would like to get a quote for a design project." data-wa-ar="مرحبًا azil.ma، أرغب في الحصول على عرض سعر لمشروع تصميم." target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> <span data-i18n="quote">Request a Quote</span>
             </a>
-            <a href="#services" class="btn-secondary">Explore Services</a>
+            <a href="#services" class="btn-secondary" data-i18n="explore">Explore Services</a>
         </div>
     </section>
 
@@ -492,71 +553,71 @@
 
             <div class="ticket-content">
                 <div class="ticket-header">
-                    <span>Job Ticket — Starter Package</span>
-                    <span>№ 001</span>
+                    <span data-i18n="ticket-label">Job Ticket — Starter Package</span>
+                    <span data-i18n="ticket-no">№ 001</span>
                 </div>
-                <h3>Logo Design + Premium Business Cards</h3>
-                <p>The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.</p>
+                <h3 data-i18n="ticket-title">Logo Design + Premium Business Cards</h3>
+                <p data-i18n="ticket-desc">The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.</p>
                 <ul class="spec-list">
-                    <li><span>Includes</span><span>Custom vector logo (AI/EPS/PDF, print & web files)</span></li>
-                    <li><span>Stock</span><span>350gsm silk or matte, or 400gsm uncoated cotton</span></li>
-                    <li><span>Finish</span><span>Matte or soft-touch lamination, optional spot UV</span></li>
-                    <li><span>Color mode</span><span>CMYK, full bleed, calibrated proof before print</span></li>
-                    <li><span>Quantity</span><span>250 / 500 / 1000 cards</span></li>
-                    <li><span>Turnaround</span><span>3–5 business days</span></li>
+                    <li><span data-i18n="spec-includes-l">Includes</span><span data-i18n="spec-includes-v">Custom vector logo (AI/EPS/PDF, print & web files)</span></li>
+                    <li><span data-i18n="spec-stock-l">Stock</span><span data-i18n="spec-stock-v">350gsm silk or matte, or 400gsm uncoated cotton</span></li>
+                    <li><span data-i18n="spec-finish-l">Finish</span><span data-i18n="spec-finish-v">Matte or soft-touch lamination, optional spot UV</span></li>
+                    <li><span data-i18n="spec-color-l">Color mode</span><span data-i18n="spec-color-v">CMYK, full bleed, calibrated proof before print</span></li>
+                    <li><span data-i18n="spec-qty-l">Quantity</span><span data-i18n="spec-qty-v">250 / 500 / 1000 cards</span></li>
+                    <li><span data-i18n="spec-turn-l">Turnaround</span><span data-i18n="spec-turn-v">3–5 business days</span></li>
                 </ul>
             </div>
 
             <div class="ticket-cta">
                 <i class="fa-solid fa-swatchbook" style="font-size: 1.8rem; color: var(--primary);"></i>
-                <p style="color: var(--text-muted); font-size: 0.92rem;">Get exact pricing for your stock, finish, and quantity.</p>
-                <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20am%20interested%20in%20the%20Starter%20Package%20(Logo%20+%20Business%20Cards)." class="whatsapp-btn" target="_blank">
-                    <i class="fa-brands fa-whatsapp"></i> Get a Price
+                <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="ticket-cta-p">Get exact pricing for your stock, finish, and quantity.</p>
+                <a href="#" class="whatsapp-btn" data-wa-en="Hello azil.ma, I am interested in the Starter Package (Logo + Business Cards)." data-wa-ar="مرحبًا azil.ma، أنا مهتم بالباقة الأساسية (شعار + بطاقات عمل)." target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="get-price">Get a Price</span>
                 </a>
-                <span class="price-note">No obligation quote</span>
+                <span class="price-note" data-i18n="no-obligation">No obligation quote</span>
             </div>
         </div>
     </section>
 
     <section class="services-section" id="services">
-        <h2 class="section-title">What We Design & Print</h2>
-        <p class="section-subtitle">Every job moves from design through prepress to final production under one roof.</p>
+        <h2 class="section-title" data-i18n="services-title">What We Design & Print</h2>
+        <p class="section-subtitle" data-i18n="services-sub">Every job moves from design through prepress to final production under one roof.</p>
         <div class="services-grid">
 
             <div class="service-card">
                 <i class="fa-solid fa-pen-nib service-icon"></i>
-                <h4>Graphic & Prepress Design</h4>
-                <p>Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.</p>
+                <h4 data-i18n="s1-h">Graphic & Prepress Design</h4>
+                <p data-i18n="s1-p">Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.</p>
             </div>
 
             <div class="service-card">
                 <i class="fa-solid fa-box-open service-icon"></i>
-                <h4>Packaging & Product Labels</h4>
-                <p>Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.</p>
+                <h4 data-i18n="s2-h">Packaging & Product Labels</h4>
+                <p data-i18n="s2-p">Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.</p>
             </div>
 
             <div class="service-card">
                 <i class="fa-solid fa-id-card service-icon"></i>
-                <h4>Business Stationery</h4>
-                <p>Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.</p>
+                <h4 data-i18n="s3-h">Business Stationery</h4>
+                <p data-i18n="s3-p">Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.</p>
             </div>
 
             <div class="service-card">
                 <i class="fa-solid fa-book-open service-icon"></i>
-                <h4>Brochures & Catalogs</h4>
-                <p>Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.</p>
+                <h4 data-i18n="s4-h">Brochures & Catalogs</h4>
+                <p data-i18n="s4-p">Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.</p>
             </div>
 
             <div class="service-card">
                 <i class="fa-solid fa-vector-square service-icon"></i>
-                <h4>Large Format & Signage</h4>
-                <p>Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.</p>
+                <h4 data-i18n="s5-h">Large Format & Signage</h4>
+                <p data-i18n="s5-p">Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.</p>
             </div>
 
             <div class="service-card">
                 <i class="fa-solid fa-print service-icon"></i>
-                <h4>Prepress & Color Management</h4>
-                <p>RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.</p>
+                <h4 data-i18n="s6-h">Prepress & Color Management</h4>
+                <p data-i18n="s6-p">RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.</p>
             </div>
 
         </div>
@@ -564,66 +625,66 @@
 
     <section class="specs-section">
         <div class="specs-inner">
-            <h2 class="section-title">Sending Us a File?</h2>
-            <p class="section-subtitle">Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.</p>
+            <h2 class="section-title" data-i18n="file-title">Sending Us a File?</h2>
+            <p class="section-subtitle" data-i18n="file-sub">Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.</p>
             <div class="specs-grid">
                 <div class="spec-box">
-                    <span class="spec-label">Resolution</span>
-                    <h5>300 DPI minimum</h5>
-                    <p>At final print size, to keep images and fine detail sharp off the press.</p>
+                    <span class="spec-label" data-i18n="f1-l">Resolution</span>
+                    <h5 data-i18n="f1-h">300 DPI minimum</h5>
+                    <p data-i18n="f1-p">At final print size, to keep images and fine detail sharp off the press.</p>
                 </div>
                 <div class="spec-box">
-                    <span class="spec-label">Color mode</span>
-                    <h5>CMYK, not RGB</h5>
-                    <p>We convert and proof in CMYK so on-screen colors match the printed result.</p>
+                    <span class="spec-label" data-i18n="f2-l">Color mode</span>
+                    <h5 data-i18n="f2-h">CMYK, not RGB</h5>
+                    <p data-i18n="f2-p">We convert and proof in CMYK so on-screen colors match the printed result.</p>
                 </div>
                 <div class="spec-box">
-                    <span class="spec-label">Bleed & margins</span>
-                    <h5>3mm bleed / 5mm safe area</h5>
-                    <p>Keeps background color running to the trim edge and text away from the cut line.</p>
+                    <span class="spec-label" data-i18n="f3-l">Bleed & margins</span>
+                    <h5 data-i18n="f3-h">3mm bleed / 5mm safe area</h5>
+                    <p data-i18n="f3-p">Keeps background color running to the trim edge and text away from the cut line.</p>
                 </div>
                 <div class="spec-box">
-                    <span class="spec-label">File formats</span>
-                    <h5>PDF, AI, high-res TIFF</h5>
-                    <p>Vector where possible; layered source files help if last-minute edits are needed.</p>
+                    <span class="spec-label" data-i18n="f4-l">File formats</span>
+                    <h5 data-i18n="f4-h">PDF, AI, high-res TIFF</h5>
+                    <p data-i18n="f4-p">Vector where possible; layered source files help if last-minute edits are needed.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="portfolio-section">
-        <h2 class="section-title">Recent Print Work</h2>
+        <h2 class="section-title" data-i18n="portfolio-title">Recent Print Work</h2>
         <div class="portfolio-grid">
 
             <div class="portfolio-item">
                 <i class="fa-solid fa-pen-nib"></i>
                 <div class="portfolio-overlay">
-                    <h5>Visual Brand Identity</h5>
-                    <p>Logo Conception & Vector Mockups</p>
+                    <h5 data-i18n="p1-h">Visual Brand Identity</h5>
+                    <p data-i18n="p1-p">Logo Conception & Vector Mockups</p>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <i class="fa-solid fa-tags"></i>
                 <div class="portfolio-overlay">
-                    <h5>Product Labeling</h5>
-                    <p>Die-Cut Stickers & Packaging Print</p>
+                    <h5 data-i18n="p2-h">Product Labeling</h5>
+                    <p data-i18n="p2-p">Die-Cut Stickers & Packaging Print</p>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <i class="fa-solid fa-stamp"></i>
                 <div class="portfolio-overlay">
-                    <h5>Premium Business Stationery</h5>
-                    <p>Foil Stamping & Spot UV Finishing</p>
+                    <h5 data-i18n="p3-h">Premium Business Stationery</h5>
+                    <p data-i18n="p3-p">Foil Stamping & Spot UV Finishing</p>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <i class="fa-solid fa-vector-square"></i>
                 <div class="portfolio-overlay">
-                    <h5>Large Format Signage</h5>
-                    <p>Posters, Banners & Vinyl Prints</p>
+                    <h5 data-i18n="p4-h">Large Format Signage</h5>
+                    <p data-i18n="p4-p">Posters, Banners & Vinyl Prints</p>
                 </div>
             </div>
 
@@ -638,16 +699,123 @@
                 <line x1="0" y1="12" x2="24" y2="12" stroke="#0466c8" stroke-width="1.2"/>
             </svg>
         </div>
-        <h2>Ready to Put Your Brand on Paper?</h2>
-        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.</p>
-        <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20have%20a%20design%20and%20printing%20project%20I%20want%20to%20discuss." class="whatsapp-btn" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i> Chat with Us (+212 632-674548)
+        <h2 data-i18n="cta-h">Ready to Put Your Brand on Paper?</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;" data-i18n="cta-p">Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.</p>
+        <a href="#" class="whatsapp-btn" data-wa-en="Hello azil.ma, I have a design and printing project I want to discuss." data-wa-ar="مرحبًا azil.ma، لدي مشروع تصميم وطباعة أرغب في مناقشته." target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> <span data-i18n="cta-btn">Chat with Us (+212 632-674548)</span>
         </a>
     </section>
 
     <footer>
-        <p>© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO</p>
+        <p data-i18n="footer">© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO</p>
     </footer>
+
+    <script>
+        const PHONE = "212632674548";
+
+        const translations = {
+            "contact": { en: "Contact Us", ar: "اتصل بنا" },
+            "hero-tag": { en: "Design & Print Production • Agadir, Morocco", ar: "التصميم والطباعة الاحترافية • أكادير، المغرب" },
+            "hero-h1": { en: "From Vector File to Finished Print, Done Right", ar: "من الملف المتّجه إلى الطباعة النهائية، بإتقان" },
+            "hero-p": { en: "Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.", ar: "خدمات متكاملة للتصميم الجرافيكي والإنتاج الطباعي: نُجهّز الشعارات والمطبوعات التعريفية لتكون جاهزة للطباعة، ثم نُنتجها داخليًا بإدارة دقيقة للألوان وورق فاخر وتشطيب نظيف." },
+            "quote": { en: "Request a Quote", ar: "اطلب عرض سعر" },
+            "explore": { en: "Explore Services", ar: "اكتشف خدماتنا" },
+            "ticket-label": { en: "Job Ticket — Starter Package", ar: "بطاقة الطلب — الباقة الأساسية" },
+            "ticket-no": { en: "№ 001", ar: "رقم 001" },
+            "ticket-title": { en: "Logo Design + Premium Business Cards", ar: "تصميم شعار + بطاقات عمل فاخرة" },
+            "ticket-desc": { en: "The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.", ar: "الباقة المثالية للمحلات والعاملين المستقلين والمشاريع الجديدة الراغبة في هوية بصرية احترافية، على الرف وفي اليد." },
+            "spec-includes-l": { en: "Includes", ar: "يشمل" },
+            "spec-includes-v": { en: "Custom vector logo (AI/EPS/PDF, print & web files)", ar: "شعار متّجه مخصص (ملفات AI وEPS وPDF للطباعة والويب)" },
+            "spec-stock-l": { en: "Stock", ar: "نوع الورق" },
+            "spec-stock-v": { en: "350gsm silk or matte, or 400gsm uncoated cotton", ar: "ورق حريري أو مطفي 350غ، أو ورق قطني غير مطلي 400غ" },
+            "spec-finish-l": { en: "Finish", ar: "التشطيب" },
+            "spec-finish-v": { en: "Matte or soft-touch lamination, optional spot UV", ar: "تصفيح مطفي أو ناعم الملمس، مع إمكانية إضافة طلاء UV موضعي" },
+            "spec-color-l": { en: "Color mode", ar: "نظام الألوان" },
+            "spec-color-v": { en: "CMYK, full bleed, calibrated proof before print", ar: "CMYK، بامتداد كامل للحواف، مع إثبات طباعة معايَر قبل التنفيذ" },
+            "spec-qty-l": { en: "Quantity", ar: "الكمية" },
+            "spec-qty-v": { en: "250 / 500 / 1000 cards", ar: "250 / 500 / 1000 بطاقة" },
+            "spec-turn-l": { en: "Turnaround", ar: "مدة التنفيذ" },
+            "spec-turn-v": { en: "3–5 business days", ar: "من 3 إلى 5 أيام عمل" },
+            "ticket-cta-p": { en: "Get exact pricing for your stock, finish, and quantity.", ar: "احصل على السعر الدقيق حسب نوع الورق والتشطيب والكمية." },
+            "get-price": { en: "Get a Price", ar: "اطلب السعر" },
+            "no-obligation": { en: "No obligation quote", ar: "عرض سعر بدون التزام" },
+            "services-title": { en: "What We Design & Print", ar: "ما نصمّمه ونطبعه" },
+            "services-sub": { en: "Every job moves from design through prepress to final production under one roof.", ar: "كل طلب يمر من التصميم إلى ما قبل الطباعة وصولًا إلى الإنتاج النهائي تحت سقف واحد." },
+            "s1-h": { en: "Graphic & Prepress Design", ar: "التصميم الجرافيكي والتجهيز لما قبل الطباعة" },
+            "s1-p": { en: "Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.", ar: "أعمال متّجهة مخصصة عبر Illustrator وPhotoshop وInDesign — شعارات ومنشورات وملصقات وأدلة هوية بصرية جاهزة للطباعة." },
+            "s2-h": { en: "Packaging & Product Labels", ar: "التغليف وملصقات المنتجات" },
+            "s2-p": { en: "Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.", ar: "ملصقات مقصوصة بدقة، وأغلفة للعلب والقناني، ومخططات صناديق مصمَّمة لتناسب أبعاد منتجك بدقة." },
+            "s3-h": { en: "Business Stationery", ar: "القرطاسية المهنية" },
+            "s3-p": { en: "Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.", ar: "بطاقات عمل وورق رسمي وأظرفة على ورق فاخر، مع تذهيب أو نقش بارز أو طلاء UV موضعي." },
+            "s4-h": { en: "Brochures & Catalogs", ar: "الكتيبات والكاتالوجات" },
+            "s4-p": { en: "Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.", ar: "كتيبات متعددة الصفحات ومنشورات مطوية، بتجليد دبوس أو تجليد لاصق، مع إدارة دقيقة للألوان في كل مراحل التجهيز." },
+            "s5-h": { en: "Large Format & Signage", ar: "الطباعة الكبيرة واللافتات" },
+            "s5-p": { en: "Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.", ar: "لافتات فينيل، وألواح PVC/فوركس، وقماش كانفاس، وشبك — واجهات محلات وأكشك ولافتات فعاليات، تُقص وتُشطَّب لدينا." },
+            "s6-h": { en: "Prepress & Color Management", ar: "التجهيز لما قبل الطباعة وإدارة الألوان" },
+            "s6-p": { en: "RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.", ar: "تحويل من RGB إلى CMYK، وضبط الحواف والقص، وترتيب الصفحات، وإثبات طباعة فعلي لضمان تطابق الطباعة مع الشاشة." },
+            "file-title": { en: "Sending Us a File?", ar: "هل سترسل لنا ملفًا؟" },
+            "file-sub": { en: "Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.", ar: "إليك ما نحتاجه لطباعة نظيفة ودقيقة الألوان — يسعدنا فحص ملفك قبل إرساله للطباعة." },
+            "f1-l": { en: "Resolution", ar: "الدقة" },
+            "f1-h": { en: "300 DPI minimum", ar: "300 نقطة/بوصة كحد أدنى" },
+            "f1-p": { en: "At final print size, to keep images and fine detail sharp off the press.", ar: "بالحجم النهائي للطباعة، للحفاظ على وضوح الصور والتفاصيل الدقيقة." },
+            "f2-l": { en: "Color mode", ar: "نظام الألوان" },
+            "f2-h": { en: "CMYK, not RGB", ar: "CMYK وليس RGB" },
+            "f2-p": { en: "We convert and proof in CMYK so on-screen colors match the printed result.", ar: "نقوم بالتحويل والإثبات بنظام CMYK لضمان تطابق الألوان بين الشاشة والنتيجة المطبوعة." },
+            "f3-l": { en: "Bleed & margins", ar: "الحواف والهوامش" },
+            "f3-h": { en: "3mm bleed / 5mm safe area", ar: "امتداد 3مم / هامش أمان 5مم" },
+            "f3-p": { en: "Keeps background color running to the trim edge and text away from the cut line.", ar: "يضمن امتداد لون الخلفية حتى حافة القص وإبعاد النص عن خط القص." },
+            "f4-l": { en: "File formats", ar: "صيغ الملفات" },
+            "f4-h": { en: "PDF, AI, high-res TIFF", ar: "PDF وAI وTIFF عالي الدقة" },
+            "f4-p": { en: "Vector where possible; layered source files help if last-minute edits are needed.", ar: "يُفضَّل الملف المتّجه، والملفات المصدرية بطبقات تساعد عند الحاجة لتعديلات لحظة أخيرة." },
+            "portfolio-title": { en: "Recent Print Work", ar: "أعمال طباعة حديثة" },
+            "p1-h": { en: "Visual Brand Identity", ar: "الهوية البصرية للعلامة" },
+            "p1-p": { en: "Logo Conception & Vector Mockups", ar: "تصميم الشعار ونماذج متّجهة" },
+            "p2-h": { en: "Product Labeling", ar: "ملصقات المنتجات" },
+            "p2-p": { en: "Die-Cut Stickers & Packaging Print", ar: "ملصقات مقصوصة وطباعة تغليف" },
+            "p3-h": { en: "Premium Business Stationery", ar: "قرطاسية مهنية فاخرة" },
+            "p3-p": { en: "Foil Stamping & Spot UV Finishing", ar: "تذهيب وطلاء UV موضعي" },
+            "p4-h": { en: "Large Format Signage", ar: "لافتات كبيرة الحجم" },
+            "p4-p": { en: "Posters, Banners & Vinyl Prints", ar: "ملصقات ولافتات وطباعة فينيل" },
+            "cta-h": { en: "Ready to Put Your Brand on Paper?", ar: "هل أنت مستعد لطباعة علامتك التجارية؟" },
+            "cta-p": { en: "Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.", ar: "سواء كان شعارًا جديدًا أو ملصقات مطبوعة أو مجموعة لافتات كاملة، أرسل لنا مشروعك عبر واتساب للحصول على عرض سعر سريع وفحص للملف." },
+            "cta-btn": { en: "Chat with Us (+212 632-674548)", ar: "تواصل معنا (212 632-674548+)" },
+            "footer": { en: "© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO", ar: "© 2026 AZIL.MA — التصميم والإنتاج الطباعي — أكادير، المغرب" }
+        };
+
+        function applyWaLinks(lang) {
+            document.querySelectorAll('[data-wa-en]').forEach(function (el) {
+                const msg = lang === 'ar' ? el.getAttribute('data-wa-ar') : el.getAttribute('data-wa-en');
+                el.setAttribute('href', 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg));
+            });
+        }
+
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                const key = el.getAttribute('data-i18n');
+                if (translations[key]) el.textContent = translations[key][lang];
+            });
+            applyWaLinks(lang);
+
+            const html = document.getElementById('html-root');
+            html.setAttribute('lang', lang);
+            html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.body.classList.toggle('lang-ar', lang === 'ar');
+            document.getElementById('langToggle').textContent = lang === 'ar' ? 'English' : 'العربية';
+
+            try { localStorage.setItem('azilLang', lang); } catch (e) {}
+        }
+
+        function toggleLang() {
+            const current = document.getElementById('html-root').getAttribute('lang');
+            setLanguage(current === 'ar' ? 'en' : 'ar');
+        }
+
+        (function initLang() {
+            let saved = 'en';
+            try { saved = localStorage.getItem('azilLang') || 'en'; } catch (e) {}
+            setLanguage(saved);
+        })();
+    </script>
 
 </body>
 </html>
