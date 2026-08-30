@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>azil.ma | Print Production & Graphic Design — Agadir, Morocco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0466c8;
+            --primary-dark: #034e9c;
+            --primary-tint: #eaf3fd;
+            --bg: #ffffff;
+            --bg-alt: #f6f9fd;
+            --border: #dde5ee;
+            --text: #0a0a0a;
+            --text-muted: #565f6b;
+            --font-heading: 'Space Grotesk', 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        ::selection { background: var(--primary); color: #fff; }
+
+        /* Registration mark + crop mark motifs — the print production signature */
+        .reg-mark {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            opacity: 0.9;
+        }
+        .reg-mark svg { width: 100%; height: 100%; display: block; }
+
+        .crop-corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+        .crop-corner::before,
+        .crop-corner::after {
+            content: '';
+            position: absolute;
+            background: var(--text);
+        }
+        .crop-corner::before { width: 100%; height: 1.5px; top: 0; left: 0; }
+        .crop-corner::after { width: 1.5px; height: 100%; top: 0; left: 0; }
+        .crop-tl { top: -8px; left: -8px; }
+        .crop-tr { top: -8px; right: -8px; transform: scaleX(-1); }
+        .crop-bl { bottom: -8px; left: -8px; transform: scaleY(-1); }
+        .crop-br { bottom: -8px; right: -8px; transform: scale(-1, -1); }
+
+        /* Header & Nav */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .logo span { color: var(--primary); }
+
+        .nav-btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover { background: var(--primary-dark); }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            padding: 5rem 5% 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-tint);
+            border: 1px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 720px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .btn-secondary:hover { background: var(--bg-alt); border-color: var(--primary); }
+
+        /* Job Ticket / Starter Package */
+        .starter-offer {
+            max-width: 1100px;
+            margin: 2rem auto 5rem;
+            padding: 0 5%;
+        }
+
+        .ticket-card {
+            position: relative;
+            background: var(--bg-alt);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 2.5rem;
+            align-items: stretch;
+        }
+
+        .ticket-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            border-bottom: 1px dashed var(--primary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .ticket-content h3 {
+            font-family: var(--font-heading);
+            font-size: 1.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ticket-content > p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.98rem;
+        }
+
+        .spec-list {
+            list-style: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .spec-list li {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+
+        .spec-list li span:first-child {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .ticket-cta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem 1.5rem;
+        }
+
+        .ticket-cta .price-note {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .whatsapp-btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 1rem 2.2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .whatsapp-btn:hover { background: var(--primary-dark); }
+
+        /* Section titles */
+        .section-title {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 2.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1rem;
+        }
+
+        /* Services */
+        .services-section {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            position: relative;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: 0.25s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 18px rgba(4, 102, 200, 0.1);
+        }
+
+        .service-icon {
+            font-size: 1.7rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+        }
+
+        .service-card h4 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.93rem;
+        }
+
+        /* File Requirements — genuinely useful print-prepress info */
+        .specs-section {
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 4rem 5%;
+        }
+
+        .specs-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spec-box {
+            position: relative;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.6rem;
+        }
+
+        .spec-box .spec-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .spec-box h5 {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .spec-box p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        /* Portfolio */
+        .portfolio-section {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-alt);
+            padding: 2rem 1.5rem;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: 0.25s ease;
+        }
+
+        .portfolio-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 18px rgba(4, 102, 200, 0.1);
+        }
+
+        .portfolio-item i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-overlay h5 {
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            color: var(--text);
+        }
+
+        .portfolio-overlay p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* CTA banner */
+        .cta-banner {
+            position: relative;
+            max-width: 1100px;
+            margin: 5rem auto;
+            background: var(--bg-alt);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-banner .whatsapp-btn { width: auto; margin-top: 1.5rem; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 5%;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+        }
+
+        @media (max-width: 768px) {
+            .ticket-card { grid-template-columns: 1fr; }
+            .spec-list li { grid-template-columns: 100px 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">azil<span>.ma</span></div>
+        <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20want%20to%20inquire%20about%20your%20design%20and%20printing%20services." class="nav-btn" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Contact Us
+        </a>
+    </header>
+
+    <section class="hero">
+        <div class="hero-tag"><i class="fa-solid fa-crosshairs"></i> Design & Print Production • Agadir, Morocco</div>
+        <h1>From Vector File to Finished Print, Done Right</h1>
+        <p>Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.</p>
+        <div class="cta-group">
+            <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20would%20like%20to%20get%20a%20quote%20for%20a%20design%20project." class="nav-btn" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> Request a Quote
+            </a>
+            <a href="#services" class="btn-secondary">Explore Services</a>
+        </div>
+    </section>
+
+    <section class="starter-offer">
+        <div class="ticket-card">
+            <div class="crop-corner crop-tl"></div>
+            <div class="crop-corner crop-tr"></div>
+            <div class="crop-corner crop-bl"></div>
+            <div class="crop-corner crop-br"></div>
+
+            <div class="ticket-content">
+                <div class="ticket-header">
+                    <span>Job Ticket — Starter Package</span>
+                    <span>№ 001</span>
+                </div>
+                <h3>Logo Design + Premium Business Cards</h3>
+                <p>The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.</p>
+                <ul class="spec-list">
+                    <li><span>Includes</span><span>Custom vector logo (AI/EPS/PDF, print & web files)</span></li>
+                    <li><span>Stock</span><span>350gsm silk or matte, or 400gsm uncoated cotton</span></li>
+                    <li><span>Finish</span><span>Matte or soft-touch lamination, optional spot UV</span></li>
+                    <li><span>Color mode</span><span>CMYK, full bleed, calibrated proof before print</span></li>
+                    <li><span>Quantity</span><span>250 / 500 / 1000 cards</span></li>
+                    <li><span>Turnaround</span><span>3–5 business days</span></li>
+                </ul>
+            </div>
+
+            <div class="ticket-cta">
+                <i class="fa-solid fa-swatchbook" style="font-size: 1.8rem; color: var(--primary);"></i>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Get exact pricing for your stock, finish, and quantity.</p>
+                <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20am%20interested%20in%20the%20Starter%20Package%20(Logo%20+%20Business%20Cards)." class="whatsapp-btn" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> Get a Price
+                </a>
+                <span class="price-note">No obligation quote</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section" id="services">
+        <h2 class="section-title">What We Design & Print</h2>
+        <p class="section-subtitle">Every job moves from design through prepress to final production under one roof.</p>
+        <div class="services-grid">
+
+            <div class="service-card">
+                <i class="fa-solid fa-pen-nib service-icon"></i>
+                <h4>Graphic & Prepress Design</h4>
+                <p>Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.</p>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-box-open service-icon"></i>
+                <h4>Packaging & Product Labels</h4>
+                <p>Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.</p>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-id-card service-icon"></i>
+                <h4>Business Stationery</h4>
+                <p>Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.</p>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-book-open service-icon"></i>
+                <h4>Brochures & Catalogs</h4>
+                <p>Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.</p>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-vector-square service-icon"></i>
+                <h4>Large Format & Signage</h4>
+                <p>Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.</p>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-print service-icon"></i>
+                <h4>Prepress & Color Management</h4>
+                <p>RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="specs-section">
+        <div class="specs-inner">
+            <h2 class="section-title">Sending Us a File?</h2>
+            <p class="section-subtitle">Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.</p>
+            <div class="specs-grid">
+                <div class="spec-box">
+                    <span class="spec-label">Resolution</span>
+                    <h5>300 DPI minimum</h5>
+                    <p>At final print size, to keep images and fine detail sharp off the press.</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-label">Color mode</span>
+                    <h5>CMYK, not RGB</h5>
+                    <p>We convert and proof in CMYK so on-screen colors match the printed result.</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-label">Bleed & margins</span>
+                    <h5>3mm bleed / 5mm safe area</h5>
+                    <p>Keeps background color running to the trim edge and text away from the cut line.</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-label">File formats</span>
+                    <h5>PDF, AI, high-res TIFF</h5>
+                    <p>Vector where possible; layered source files help if last-minute edits are needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <h2 class="section-title">Recent Print Work</h2>
+        <div class="portfolio-grid">
+
+            <div class="portfolio-item">
+                <i class="fa-solid fa-pen-nib"></i>
+                <div class="portfolio-overlay">
+                    <h5>Visual Brand Identity</h5>
+                    <p>Logo Conception & Vector Mockups</p>
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <i class="fa-solid fa-tags"></i>
+                <div class="portfolio-overlay">
+                    <h5>Product Labeling</h5>
+                    <p>Die-Cut Stickers & Packaging Print</p>
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <i class="fa-solid fa-stamp"></i>
+                <div class="portfolio-overlay">
+                    <h5>Premium Business Stationery</h5>
+                    <p>Foil Stamping & Spot UV Finishing</p>
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <i class="fa-solid fa-vector-square"></i>
+                <div class="portfolio-overlay">
+                    <h5>Large Format Signage</h5>
+                    <p>Posters, Banners & Vinyl Prints</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="cta-banner">
+        <div class="reg-mark" style="top: 14px; left: 14px;">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="#0466c8" stroke-width="1.2"/>
+                <line x1="12" y1="0" x2="12" y2="24" stroke="#0466c8" stroke-width="1.2"/>
+                <line x1="0" y1="12" x2="24" y2="12" stroke="#0466c8" stroke-width="1.2"/>
+            </svg>
+        </div>
+        <h2>Ready to Put Your Brand on Paper?</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.</p>
+        <a href="https://wa.me/212632674548?text=Hello%20azil.ma,%20I%20have%20a%20design%20and%20printing%20project%20I%20want%20to%20discuss." class="whatsapp-btn" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Chat with Us (+212 632-674548)
+        </a>
+    </section>
+
+    <footer>
+        <p>© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO</p>
+    </footer>
+
+</body>
+</html>
