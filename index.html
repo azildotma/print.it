@@ -44,8 +44,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <!-- Cairo is lazy-loaded on first Arabic activation (see JS) -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <!-- Tajawal (Arabic) is lazy-loaded on first Arabic activation (see JS) -->
     <!-- Font Awesome, non-render-blocking -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
@@ -90,7 +90,7 @@
             --font-heading: 'Space Grotesk', 'Inter', sans-serif;
             --font-body: 'Inter', sans-serif;
             --font-mono: 'IBM Plex Mono', monospace;
-            --font-ar: 'Cairo', 'Inter', sans-serif;
+            --font-ar: 'Tajawal', 'Inter', sans-serif;
             --c-cyan:#00AEEF; --c-magenta:#EC008C; --c-yellow:#FFF200; --c-key:#0a0a0a;
             --ease: cubic-bezier(.2,.8,.2,1);
         }
@@ -201,12 +201,15 @@
         .logo { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; color: var(--text); }
         .logo span { color: var(--primary); }
         .header-actions { display: flex; align-items: center; gap: 0.75rem; }
-        .lang-btn {
-            background: transparent; border: 1px solid var(--border); color: var(--text);
-            padding: 0.55rem 1.1rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem;
-            cursor: pointer; font-family: 'Cairo', 'Inter', sans-serif; transition: 0.25s ease;
+        .lang-seg{ display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+        .lang-seg-btn{
+            background:transparent; border:none; color:var(--text-muted); cursor:pointer;
+            padding:.5rem .8rem; font-weight:600; font-size:.85rem; font-family:'Tajawal','Inter',sans-serif;
+            border-inline-end:1px solid var(--border); transition:.2s ease; min-height:40px;
         }
-        .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .lang-seg-btn:last-child{ border-inline-end:none; }
+        .lang-seg-btn:hover{ color:var(--primary); }
+        .lang-seg-btn.active{ background:var(--primary); color:#fff; }
         .theme-toggle{
             width:40px; height:40px; border-radius:8px; border:1px solid var(--border);
             background:transparent; color:var(--text-muted); cursor:pointer; display:grid; place-items:center;
@@ -278,7 +281,7 @@
         }
         .ready-badge{ display:inline-flex; align-items:center; gap:.35rem; background:var(--primary-tint); border:1px solid var(--primary);
             color:var(--primary-dark); padding:.2rem .6rem; border-radius:50px; letter-spacing:.5px; }
-        .ticket-content h3 { font-family: var(--font-heading); font-size: 1.7rem; margin-bottom: 0.8rem; }
+        .ticket-content h3 { font-family: var(--font-heading); font-size: clamp(1.3rem, 4.5vw, 1.7rem); margin-bottom: 0.8rem; }
         .ticket-content > p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.98rem; }
         .spec-list { list-style: none; border-top: 1px solid var(--border); }
         .spec-list li { display: grid; grid-template-columns: 130px 1fr; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
@@ -297,7 +300,7 @@
         .whatsapp-btn:hover { background: var(--primary-dark); }
 
         /* Section titles */
-        .section-title { text-align: center; font-family: var(--font-heading); font-size: 2.1rem; margin-bottom: 0.6rem; }
+        .section-title { text-align: center; font-family: var(--font-heading); font-size: clamp(1.6rem, 5vw, 2.1rem); margin-bottom: 0.6rem; }
         .section-subtitle { text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem; font-size: 1rem; }
 
         /* Services */
@@ -397,7 +400,7 @@
 
         /* CTA banner */
         .cta-banner { position: relative; max-width: 1100px; margin: 5rem auto; background: var(--bg-alt); border: 1px solid var(--primary); border-radius: 8px; padding: 3rem 2rem; text-align: center; }
-        .cta-banner h2 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 1rem; }
+        .cta-banner h2 { font-family: var(--font-heading); font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 1rem; }
         .cta-banner .whatsapp-btn { width: auto; margin-top: 1.5rem; }
 
         /* Footer */
@@ -430,9 +433,44 @@
         @keyframes rip{ to{ transform:translate(-50%,-50%) scale(1); opacity:0; } }
 
         @media (max-width: 768px) {
-            .ticket-card { grid-template-columns: 1fr; }
+            .ticket-card { grid-template-columns: 1fr; padding: 1.6rem 1.3rem; gap: 1.6rem; }
+            .ticket-header { font-size: .7rem; letter-spacing: 1px; }
             .spec-list li { grid-template-columns: 100px 1fr; }
             header { padding: 1rem 6%; }
+            /* comfortable touch targets */
+            .btn-secondary { min-height: 44px; display: inline-flex; align-items: center; }
+            .faq-q { padding: 1.1rem .2rem; min-height: 48px; }
+            .theme-toggle { width: 44px; height: 44px; }
+            .lang-seg-btn { min-height: 44px; }
+            .wa-float { width: 54px; height: 54px; }
+        }
+
+        @media (max-width: 620px){
+            .stat-inner { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 600px){
+            header { padding: .8rem 5%; gap: .6rem; }
+            .header-actions { gap: .5rem; }
+            .lang-seg-btn { padding: .5rem .6rem; font-size: .8rem; }
+            .nav-btn { padding: .55rem 1rem; }
+            .quick-chips { gap: .5rem; }
+            .chip { padding: .55rem .9rem; font-size: .82rem; min-height: 40px; }
+        }
+
+        @media (max-width: 520px){
+            .press-guar-inner { flex-direction: column; align-items: flex-start; gap: .7rem; padding: 1.1rem 1.2rem; }
+            .press-guar-p { font-size: .9rem; }
+        }
+
+        @media (max-width: 420px){
+            .lang-seg-btn { padding: .45rem .5rem; }
+            .ticket-card { padding: 1.3rem 1rem; }
+            .spec-list li { grid-template-columns: 1fr; gap: .15rem; padding: .6rem 0; } /* label stacks above value */
+        }
+
+        @media (max-width: 380px){
+            .stat .num { font-size: 1.6rem; }
         }
 
         @media (prefers-reduced-motion: reduce){
@@ -469,9 +507,13 @@
     <header>
         <div class="logo">azil<span>.ma</span></div>
         <div class="header-actions">
-            <button class="lang-btn" id="langToggle" onclick="toggleLang()" aria-label="Switch language / تبديل اللغة">العربية</button>
+            <div class="lang-seg" role="group" aria-label="Language / Langue / اللغة">
+                <button type="button" class="lang-seg-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+                <button type="button" class="lang-seg-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+                <button type="button" class="lang-seg-btn" data-lang="ar" onclick="setLanguage('ar')">عربي</button>
+            </div>
             <button class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle dark mode"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
-            <a href="#" class="nav-btn magnetic" data-wa-en="Hello azil.ma, I want to inquire about your design and printing services." data-wa-ar="مرحبًا azil.ma، أريد الاستفسار عن خدمات التصميم والطباعة لديكم." target="_blank" rel="noopener">
+            <a href="#" class="nav-btn magnetic" data-wa-en="Hello azil.ma, I want to inquire about your design and printing services." data-wa-fr="Bonjour azil.ma, je souhaite me renseigner sur vos services de design et d'impression." data-wa-ar="مرحبًا azil.ma، أريد الاستفسار عن خدمات التصميم والطباعة لديكم." target="_blank" rel="noopener">
                 <i class="fa-brands fa-whatsapp"></i> <span data-i18n="contact">Contact Us</span> <span class="wa-num">+212 632-674548</span>
             </a>
         </div>
@@ -483,16 +525,16 @@
         <h1 class="reveal d1" data-i18n="hero-h1">From Vector File to Finished Print, Done Right</h1>
         <p class="reveal d2" data-i18n="hero-p">Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.</p>
         <div class="cta-group reveal d3">
-            <a href="#" class="nav-btn magnetic" data-wa-en="Hello azil.ma, I would like to get a quote for a design project." data-wa-ar="مرحبًا azil.ma، أرغب في الحصول على عرض سعر لمشروع تصميم." target="_blank" rel="noopener">
+            <a href="#" class="nav-btn magnetic" data-wa-en="Hello azil.ma, I would like to get a quote for a design project." data-wa-fr="Bonjour azil.ma, je souhaite obtenir un devis pour un projet de design." data-wa-ar="مرحبًا azil.ma، أرغب في الحصول على عرض سعر لمشروع تصميم." target="_blank" rel="noopener">
                 <i class="fa-brands fa-whatsapp"></i> <span data-i18n="quote">Request a Quote</span>
             </a>
             <a href="#services" class="btn-secondary" data-i18n="explore">Explore Services</a>
         </div>
         <div class="quick-chips reveal d3">
-            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for business cards." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر لبطاقات العمل." target="_blank" rel="noopener"><i class="fa-solid fa-id-card"></i> <span data-i18n="chip-cards">Business cards</span></a>
-            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for stickers/labels." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر للملصقات." target="_blank" rel="noopener"><i class="fa-solid fa-tags"></i> <span data-i18n="chip-stickers">Stickers & labels</span></a>
-            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for a banner/signage." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر للافتة/لوحة." target="_blank" rel="noopener"><i class="fa-solid fa-flag"></i> <span data-i18n="chip-banners">Banners & signage</span></a>
-            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for a logo." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر لتصميم شعار." target="_blank" rel="noopener"><i class="fa-solid fa-pen-nib"></i> <span data-i18n="chip-logo">Logo design</span></a>
+            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for business cards." data-wa-fr="Bonjour azil.ma, je souhaite un devis pour des cartes de visite." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر لبطاقات العمل." target="_blank" rel="noopener"><i class="fa-solid fa-id-card"></i> <span data-i18n="chip-cards">Business cards</span></a>
+            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for stickers/labels." data-wa-fr="Bonjour azil.ma, je souhaite un devis pour des stickers/étiquettes." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر للملصقات." target="_blank" rel="noopener"><i class="fa-solid fa-tags"></i> <span data-i18n="chip-stickers">Stickers & labels</span></a>
+            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for a banner/signage." data-wa-fr="Bonjour azil.ma, je souhaite un devis pour une banderole/enseigne." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر للافتة/لوحة." target="_blank" rel="noopener"><i class="fa-solid fa-flag"></i> <span data-i18n="chip-banners">Banners & signage</span></a>
+            <a href="#" class="chip" data-wa-en="Hello azil.ma, I want a quote for a logo." data-wa-fr="Bonjour azil.ma, je souhaite un devis pour un logo." data-wa-ar="مرحبًا azil.ma، أريد عرض سعر لتصميم شعار." target="_blank" rel="noopener"><i class="fa-solid fa-pen-nib"></i> <span data-i18n="chip-logo">Logo design</span></a>
         </div>
     </section>
 
@@ -534,7 +576,7 @@
             <div class="ticket-cta">
                 <i class="fa-solid fa-swatchbook" style="font-size: 1.8rem; color: var(--primary);"></i>
                 <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="ticket-cta-p">Get exact pricing for your stock, finish, and quantity.</p>
-                <a href="#" class="whatsapp-btn magnetic" data-wa-en="Hello azil.ma, I am interested in the Starter Package (Logo + Business Cards)." data-wa-ar="مرحبًا azil.ma، أنا مهتم بالباقة الأساسية (شعار + بطاقات عمل)." target="_blank" rel="noopener">
+                <a href="#" class="whatsapp-btn magnetic" data-wa-en="Hello azil.ma, I am interested in the Starter Package (Logo + Business Cards)." data-wa-fr="Bonjour azil.ma, le Pack de démarrage (Logo + Cartes de visite) m'intéresse." data-wa-ar="مرحبًا azil.ma، أنا مهتم بالباقة الأساسية (شعار + بطاقات عمل)." target="_blank" rel="noopener">
                     <i class="fa-brands fa-whatsapp"></i> <span data-i18n="get-price">Get a Price</span>
                 </a>
                 <span class="price-note" data-i18n="no-obligation">No obligation quote</span>
@@ -718,7 +760,7 @@
                 <button class="faq-q" aria-expanded="false" aria-controls="faq4-a"><span class="faq-num">Q4</span><span data-i18n="faq4-q">Can you deliver outside Agadir?</span><span class="chev" aria-hidden="true"></span></button>
                 <div class="faq-a" id="faq4-a" role="region"><div class="faq-a-inner">
                     <p data-i18n="faq4-a">Yes. Pick up in Agadir or we ship anywhere in Morocco. Message us your area on WhatsApp.</p>
-                    <a href="#" class="faq-ask" data-wa-en="Hello azil.ma, I have a question about my file / quantity / delivery." data-wa-ar="مرحبًا azil.ma، لدي سؤال حول ملفي / الكمية / التوصيل." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> <span data-i18n="faq-ask">Ask on WhatsApp</span></a>
+                    <a href="#" class="faq-ask" data-wa-en="Hello azil.ma, I have a question about my file / quantity / delivery." data-wa-fr="Bonjour azil.ma, j'ai une question sur mon fichier / la quantité / la livraison." data-wa-ar="مرحبًا azil.ma، لدي سؤال حول ملفي / الكمية / التوصيل." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> <span data-i18n="faq-ask">Ask on WhatsApp</span></a>
                 </div></div>
             </div>
         </div>
@@ -734,7 +776,7 @@
         </div>
         <h2 class="reveal" data-i18n="cta-h">Ready to Put Your Brand on Paper?</h2>
         <p class="reveal" style="color: var(--text-muted); max-width: 600px; margin: 0 auto;" data-i18n="cta-p">Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.</p>
-        <a href="#" class="whatsapp-btn magnetic" data-wa-en="Hello azil.ma, I have a design and printing project I want to discuss." data-wa-ar="مرحبًا azil.ma، لدي مشروع تصميم وطباعة أرغب في مناقشته." target="_blank" rel="noopener">
+        <a href="#" class="whatsapp-btn magnetic" data-wa-en="Hello azil.ma, I have a design and printing project I want to discuss." data-wa-fr="Bonjour azil.ma, j'ai un projet de design et d'impression dont je souhaite discuter." data-wa-ar="مرحبًا azil.ma، لدي مشروع تصميم وطباعة أرغب في مناقشته." target="_blank" rel="noopener">
             <i class="fa-brands fa-whatsapp"></i> <span data-i18n="cta-btn">Chat with Us (+212 632-674548)</span>
         </a>
     </section>
@@ -744,7 +786,7 @@
     </footer>
 
     <!-- Floating WhatsApp FAB -->
-    <a href="#" class="wa-float" data-wa-en="Hello azil.ma, I'd like to start a print project." data-wa-ar="مرحبًا azil.ma، أرغب في بدء مشروع طباعة." target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+    <a href="#" class="wa-float" data-wa-en="Hello azil.ma, I'd like to start a print project." data-wa-fr="Bonjour azil.ma, je souhaite démarrer un projet d'impression." data-wa-ar="مرحبًا azil.ma، أرغب في بدء مشروع طباعة." target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
     </a>
 
@@ -752,121 +794,122 @@
         const PHONE = "212632674548";
 
         const translations = {
-            "contact": { en: "Contact Us", ar: "اتصل بنا" },
-            "hero-tag": { en: "Design & Print Production • Agadir, Morocco", ar: "التصميم والطباعة الاحترافية • أكادير، المغرب" },
-            "hero-h1": { en: "From Vector File to Finished Print, Done Right", ar: "من الملف المتّجه إلى الطباعة النهائية، بإتقان" },
-            "hero-p": { en: "Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.", ar: "خدمات متكاملة للتصميم الجرافيكي والإنتاج الطباعي: نُجهّز الشعارات والمطبوعات التعريفية لتكون جاهزة للطباعة، ثم نُنتجها داخليًا بإدارة دقيقة للألوان وورق فاخر وتشطيب نظيف." },
-            "quote": { en: "Request a Quote", ar: "اطلب عرض سعر" },
-            "explore": { en: "Explore Services", ar: "اكتشف خدماتنا" },
-            "chip-cards": { en: "Business cards", ar: "بطاقات عمل" },
-            "chip-stickers": { en: "Stickers & labels", ar: "ملصقات" },
-            "chip-banners": { en: "Banners & signage", ar: "لافتات" },
-            "chip-logo": { en: "Logo design", ar: "تصميم شعار" },
-            "wa-loading": { en: "Calibrating color…", ar: "جارٍ معايرة الألوان…" },
-            "stat1-l": { en: "Print jobs delivered", ar: "طلب طباعة منجز" },
-            "stat2-l": { en: "Day turnaround", ar: "أيام التنفيذ" },
-            "stat3-l": { en: "Min print resolution", ar: "أدنى دقة للطباعة" },
-            "stat4-l": { en: "Color-managed, CMYK", ar: "بإدارة ألوان CMYK" },
-            "ticket-label": { en: "Job Ticket — Starter Package", ar: "بطاقة الطلب — الباقة الأساسية" },
-            "ready-badge": { en: "Ready in 3–5 days", ar: "جاهز خلال 3–5 أيام" },
-            "ticket-no": { en: "№ 001", ar: "رقم 001" },
-            "ticket-title": { en: "Logo Design + Premium Business Cards", ar: "تصميم شعار + بطاقات عمل فاخرة" },
-            "ticket-desc": { en: "The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.", ar: "الباقة المثالية للمحلات والعاملين المستقلين والمشاريع الجديدة الراغبة في هوية بصرية احترافية، على الرف وفي اليد." },
-            "spec-includes-l": { en: "Includes", ar: "يشمل" },
-            "spec-includes-v": { en: "Custom vector logo (AI/EPS/PDF, print & web files)", ar: "شعار متّجه مخصص (ملفات AI وEPS وPDF للطباعة والويب)" },
-            "spec-stock-l": { en: "Stock", ar: "نوع الورق" },
-            "spec-stock-v": { en: "350gsm silk or matte, or 400gsm uncoated cotton", ar: "ورق حريري أو مطفي 350غ، أو ورق قطني غير مطلي 400غ" },
-            "spec-finish-l": { en: "Finish", ar: "التشطيب" },
-            "spec-finish-v": { en: "Silk/matte stock: matte or soft-touch lamination + optional spot UV. Cotton stock: natural uncoated finish, optional colored edges.", ar: "الورق الحريري/المطفي: تصفيح مطفي أو ناعم + طلاء UV موضعي اختياري. الورق القطني: تشطيب طبيعي غير مطلي، مع حواف ملوّنة اختيارية." },
-            "spec-color-l": { en: "Color mode", ar: "نظام الألوان" },
-            "spec-color-v": { en: "CMYK · 3 mm bleed · calibrated hard proof before print", ar: "CMYK · حواف 3 مم · نموذج طباعة معايَر قبل التنفيذ" },
-            "spec-qty-l": { en: "Quantity", ar: "الكمية" },
-            "spec-qty-v": { en: "250 / 500 / 1000 cards", ar: "250 / 500 / 1000 بطاقة" },
-            "spec-turn-l": { en: "Turnaround", ar: "مدة التنفيذ" },
-            "spec-turn-v": { en: "3–5 business days", ar: "من 3 إلى 5 أيام عمل" },
-            "ticket-cta-p": { en: "Get exact pricing for your stock, finish, and quantity.", ar: "احصل على السعر الدقيق حسب نوع الورق والتشطيب والكمية." },
-            "get-price": { en: "Get a Price", ar: "اطلب السعر" },
-            "no-obligation": { en: "No obligation quote", ar: "عرض سعر بدون التزام" },
-            "proof-line": { en: "You'll see a color proof before we print a single card.", ar: "سترى إثبات ألوان قبل طباعة أي بطاقة." },
-            "services-title": { en: "What We Design & Print", ar: "ما نصمّمه ونطبعه" },
-            "services-sub": { en: "Every job moves from design through prepress to final production under one roof.", ar: "كل طلب يمر من التصميم إلى ما قبل الطباعة وصولًا إلى الإنتاج النهائي تحت سقف واحد." },
-            "s1-h": { en: "Graphic & Prepress Design", ar: "التصميم الجرافيكي والتجهيز لما قبل الطباعة" },
-            "s1-p": { en: "Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.", ar: "أعمال متّجهة مخصصة عبر Illustrator وPhotoshop وInDesign — شعارات ومنشورات وملصقات وأدلة هوية بصرية جاهزة للطباعة." },
-            "s2-h": { en: "Packaging & Product Labels", ar: "التغليف وملصقات المنتجات" },
-            "s2-p": { en: "Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.", ar: "ملصقات مقصوصة بدقة، وأغلفة للعلب والقناني، ومخططات صناديق مصمَّمة لتناسب أبعاد منتجك بدقة." },
-            "s3-h": { en: "Business Stationery", ar: "القرطاسية المهنية" },
-            "s3-p": { en: "Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.", ar: "بطاقات عمل وورق رسمي وأظرفة على ورق فاخر، مع تذهيب أو نقش بارز أو طلاء UV موضعي." },
-            "s4-h": { en: "Brochures & Catalogs", ar: "الكتيبات والكاتالوجات" },
-            "s4-p": { en: "Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.", ar: "كتيبات متعددة الصفحات ومنشورات مطوية، بتجليد دبوس أو تجليد لاصق، مع إدارة دقيقة للألوان في كل مراحل التجهيز." },
-            "s5-h": { en: "Large Format & Signage", ar: "الطباعة الكبيرة واللافتات" },
-            "s5-p": { en: "Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.", ar: "لافتات فينيل، وألواح PVC/فوركس، وقماش كانفاس، وشبك — واجهات محلات وأكشك ولافتات فعاليات، تُقص وتُشطَّب لدينا." },
-            "s6-h": { en: "Prepress & Color Management", ar: "التجهيز لما قبل الطباعة وإدارة الألوان" },
-            "s6-p": { en: "RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.", ar: "تحويل من RGB إلى CMYK، وضبط الحواف والقص، وترتيب الصفحات، وإثبات طباعة فعلي لضمان تطابق الطباعة مع الشاشة." },
-            "file-title": { en: "Sending Us a File?", ar: "هل سترسل لنا ملفًا؟" },
-            "file-sub": { en: "Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.", ar: "إليك ما نحتاجه لطباعة نظيفة ودقيقة الألوان — يسعدنا فحص ملفك قبل إرساله للطباعة." },
-            "f1-l": { en: "Resolution", ar: "الدقة" },
-            "f1-h": { en: "300 DPI minimum", ar: "300 نقطة/بوصة كحد أدنى" },
-            "f1-p": { en: "300 DPI at final size for photos; logos and text as vector for crisp edges at any scale.", ar: "300 نقطة/بوصة بالحجم النهائي للصور؛ والشعارات والنصوص كملفات متّجهة لحواف حادة بأي حجم." },
-            "f2-l": { en: "Color mode", ar: "نظام الألوان" },
-            "f2-h": { en: "CMYK, not RGB", ar: "CMYK وليس RGB" },
-            "f2-p": { en: "We convert and soft-proof in CMYK, then confirm color on a hard proof before the run — no surprises on press.", ar: "نحوّل ونعاين الألوان بنظام CMYK، ثم نؤكّدها على نموذج طباعة فعلي قبل السحب — دون مفاجآت على الآلة." },
-            "f3-l": { en: "Bleed & margins", ar: "الحواف والهوامش" },
-            "f3-h": { en: "3mm bleed / 5mm safe area", ar: "امتداد 3مم / هامش أمان 5مم" },
-            "f3-p": { en: "Keeps background color running to the trim edge and text away from the cut line.", ar: "يضمن امتداد لون الخلفية حتى حافة القص وإبعاد النص عن خط القص." },
-            "f4-l": { en: "File formats", ar: "صيغ الملفات" },
-            "f4-h": { en: "Print-ready PDF (PDF/X-1a)", ar: "PDF جاهز للطباعة (PDF/X-1a)" },
-            "f4-p": { en: "Fonts outlined or embedded, images embedded at 300 DPI. AI/EPS or flattened TIFF also accepted.", ar: "الخطوط محوّلة إلى مسارات أو مضمّنة، والصور مضمّنة بدقة 300 نقطة/بوصة. نقبل أيضًا AI/EPS أو TIFF مسطّح." },
-            "f5-l": { en: "Ink coverage", ar: "تغطية الحبر" },
-            "f5-h": { en: "Max TAC 300%", ar: "حد الحبر الأقصى 300٪" },
-            "f5-p": { en: "Keep total area coverage at or under 300% on coated stock so solids dry clean and don't offset.", ar: "أبقِ إجمالي تغطية الحبر عند 300٪ أو أقل على الورق المطلي لتجفّ المساحات الصلبة نظيفة دون تلطّخ." },
-            "f6-l": { en: "Color management", ar: "إدارة الألوان" },
-            "f6-h": { en: "ICC-managed, FOGRA39", ar: "مُدارة بـ ICC، معيار FOGRA39" },
-            "f6-p": { en: "Coated jobs profiled to ISO Coated v2 (FOGRA39). Send RGB and we handle the separation, or supply CMYK to profile.", ar: "الأعمال على الورق المطلي معايَرة وفق ISO Coated v2 (FOGRA39). أرسل RGB ونتكفّل بالفصل اللوني، أو زوّدنا بملف CMYK حسب البروفايل." },
-            "press-guar-l": { en: "Press guarantee", ar: "ضمان الطباعة" },
-            "press-guar-p": { en: "Nothing goes on press until you approve a proof. Digital soft-proof on every job; hard proof on request for color-critical work.", ar: "لا شيء يُطبع قبل موافقتك على النموذج. نموذج رقمي في كل طلب، ونموذج مطبوع عند الطلب للأعمال الحساسة لونيًا." },
-            "portfolio-title": { en: "Recent Print Work", ar: "أعمال طباعة حديثة" },
-            "p1-h": { en: "Visual Brand Identity", ar: "الهوية البصرية للعلامة" },
-            "p1-p": { en: "Logo Conception & Vector Mockups", ar: "تصميم الشعار ونماذج متّجهة" },
-            "p2-h": { en: "Product Labeling", ar: "ملصقات المنتجات" },
-            "p2-p": { en: "Die-Cut Stickers & Packaging Print", ar: "ملصقات مقصوصة وطباعة تغليف" },
-            "p3-h": { en: "Premium Business Stationery", ar: "قرطاسية مهنية فاخرة" },
-            "p3-p": { en: "Foil Stamping & Spot UV Finishing", ar: "تذهيب وطلاء UV موضعي" },
-            "p4-h": { en: "Large Format Signage", ar: "لافتات كبيرة الحجم" },
-            "p4-p": { en: "Posters, Banners & Vinyl Prints", ar: "ملصقات ولافتات وطباعة فينيل" },
-            "tst-title": { en: "What Clients Say", ar: "ماذا يقول عملاؤنا" },
-            "tst-sub": { en: "A few words from azil.ma print clients. (Placeholders — replace with real ones.)", ar: "بعض كلمات من عملاء الطباعة لدى azil.ma. (نصوص توضيحية — استبدلها بآراء حقيقية.)" },
-            "tst-slip": { en: "Proof — Approved", ar: "نموذج — معتمد" },
-            "tst-stamp": { en: "APPROVED ✓", ar: "مُعتمد ✓" },
-            "tst1-p": { en: "\"The business cards came out exactly like the proof — clean spot UV and perfect color. Very professional.\"", ar: "«خرجت بطاقات العمل مطابقة تمامًا للنموذج — طلاء UV نظيف وألوان مضبوطة. احترافية عالية.»" },
-            "tst1-n": { en: "Khalid", ar: "خالد" }, "tst1-r": { en: "Shop owner, Agadir", ar: "صاحب محل، أكادير" },
-            "tst2-p": { en: "\"They fixed my file's bleed and CMYK before printing my labels. Saved me a costly reprint.\"", ar: "«ضبطوا حواف ملفي ونظام CMYK قبل طباعة ملصقاتي. وفّروا عليّ إعادة طباعة مكلفة.»" },
-            "tst2-n": { en: "Nadia", ar: "نادية" }, "tst2-r": { en: "Cosmetics brand", ar: "علامة مستحضرات تجميل" },
-            "tst3-p": { en: "\"Banners and signage delivered on time and cut clean. The whole storefront looks sharp now.\"", ar: "«لافتات ولوحات وصلت في وقتها ومقصوصة بدقة. أصبحت واجهة المحل أنيقة جدًا.»" },
-            "tst3-n": { en: "Youssef", ar: "يوسف" }, "tst3-r": { en: "Restaurant, Inezgane", ar: "مطعم، إنزكان" },
-            "faq-title": { en: "Prepress FAQ", ar: "أسئلة شائعة حول التجهيز" },
-            "faq1-q": { en: "What file format should I send?", ar: "ما صيغة الملف التي أرسلها؟" },
-            "faq1-a": { en: "Print-ready PDF (PDF/X-1a) is best, or vector AI/EPS. High-res TIFF works for photo work. We check every file before press.", ar: "الأفضل ملف PDF جاهز للطباعة (PDF/X-1a)، أو ملف متّجه AI/EPS. وTIFF عالي الدقة للصور. نفحص كل ملف قبل الطباعة." },
-            "faq2-q": { en: "Do you convert my RGB files to CMYK?", ar: "هل تحوّلون ملفاتي من RGB إلى CMYK؟" },
-            "faq2-a": { en: "Yes. We convert and soft-proof in CMYK, then confirm on a proof before the run — no surprises on press.", ar: "نعم. نحوّل ونعاين بنظام CMYK، ثم نؤكّد على نموذج قبل السحب — دون مفاجآت على الآلة." },
-            "faq3-q": { en: "How long does a print job take?", ar: "كم يستغرق تنفيذ الطلب؟" },
-            "faq3-a": { en: "Most jobs are ready in 3–5 business days after proof approval, depending on quantity and finish.", ar: "تُنجز أغلب الطلبات خلال 3 إلى 5 أيام عمل بعد اعتماد النموذج، حسب الكمية والتشطيب." },
-            "faq4-q": { en: "Can you deliver outside Agadir?", ar: "هل توصّلون خارج أكادير؟" },
-            "faq4-a": { en: "Yes. Pick up in Agadir or we ship anywhere in Morocco. Message us your area on WhatsApp.", ar: "نعم. الاستلام في أكادير أو نشحن إلى أي مكان في المغرب. راسلنا بمنطقتك على واتساب." },
-            "faq-ask": { en: "Ask on WhatsApp", ar: "اسأل على واتساب" },
-            "cta-h": { en: "Ready to Put Your Brand on Paper?", ar: "هل أنت مستعد لطباعة علامتك التجارية؟" },
-            "cta-p": { en: "Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.", ar: "سواء كان شعارًا جديدًا أو ملصقات مطبوعة أو مجموعة لافتات كاملة، أرسل لنا مشروعك عبر واتساب للحصول على عرض سعر سريع وفحص للملف." },
-            "cta-btn": { en: "Chat with Us (+212 632-674548)", ar: "تواصل معنا (212 632-674548+)" },
-            "footer": { en: "© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO", ar: "© 2026 AZIL.MA — التصميم والإنتاج الطباعي — أكادير، المغرب" }
+            "contact": { en: "Contact Us", ar: "اتصل بنا", fr: "Contactez-nous" },
+            "hero-tag": { en: "Design & Print Production • Agadir, Morocco", ar: "التصميم والطباعة الاحترافية • أكادير، المغرب", fr: "Design graphique & Impression • Agadir, Maroc" },
+            "hero-h1": { en: "From Vector File to Finished Print, Done Right", ar: "من الملف المتّجه إلى الطباعة النهائية، بإتقان", fr: "Du fichier vectoriel au tirage final, avec exigence" },
+            "hero-p": { en: "Full-service graphic design and print production: logos and brand collateral prepared print-ready, then produced in-house with precise color management, premium stocks, and clean finishing.", ar: "خدمات متكاملة للتصميم الجرافيكي والإنتاج الطباعي: نُجهّز الشعارات والمطبوعات التعريفية لتكون جاهزة للطباعة، ثم نُنتجها داخليًا بإدارة دقيقة للألوان وورق فاخر وتشطيب نظيف.", fr: "Un service complet de design graphique et de production d'impression : logos et supports de marque préparés prêts à imprimer, puis produits en interne avec une gestion précise des couleurs, des papiers haut de gamme et des finitions soignées." },
+            "quote": { en: "Request a Quote", ar: "اطلب عرض سعر", fr: "Demander un devis" },
+            "explore": { en: "Explore Services", ar: "اكتشف خدماتنا", fr: "Découvrir nos services" },
+            "chip-cards": { en: "Business cards", ar: "بطاقات عمل", fr: "Cartes de visite" },
+            "chip-stickers": { en: "Stickers & labels", ar: "ملصقات", fr: "Stickers & étiquettes" },
+            "chip-banners": { en: "Banners & signage", ar: "لافتات", fr: "Banderoles & enseignes" },
+            "chip-logo": { en: "Logo design", ar: "تصميم شعار", fr: "Création de logo" },
+            "wa-loading": { en: "Calibrating color…", ar: "جارٍ معايرة الألوان…", fr: "Calibrage des couleurs…" },
+            "stat1-l": { en: "Print jobs delivered", ar: "طلب طباعة منجز", fr: "Travaux d'impression livrés" },
+            "stat2-l": { en: "Day turnaround", ar: "أيام التنفيذ", fr: "Jours de délai" },
+            "stat3-l": { en: "Min print resolution", ar: "أدنى دقة للطباعة", fr: "Résolution d'impression min." },
+            "stat4-l": { en: "Color-managed, CMYK", ar: "بإدارة ألوان CMYK", fr: "Couleurs gérées, CMJN" },
+            "ticket-label": { en: "Job Ticket — Starter Package", ar: "بطاقة الطلب — الباقة الأساسية", fr: "Bon de commande — Pack de démarrage" },
+            "ready-badge": { en: "Ready in 3–5 days", ar: "جاهز خلال 3–5 أيام", fr: "Prêt en 3 à 5 jours" },
+            "ticket-no": { en: "№ 001", ar: "رقم 001", fr: "N° 001" },
+            "ticket-title": { en: "Logo Design + Premium Business Cards", ar: "تصميم شعار + بطاقات عمل فاخرة", fr: "Création de logo + Cartes de visite premium" },
+            "ticket-desc": { en: "The complete entry package for shops, freelancers, and new businesses who want a professional identity on the shelf and in hand.", ar: "الباقة المثالية للمحلات والعاملين المستقلين والمشاريع الجديدة الراغبة في هوية بصرية احترافية، على الرف وفي اليد.", fr: "Le pack de démarrage complet pour les commerces, les indépendants et les nouvelles entreprises qui veulent une identité professionnelle, en rayon comme en main." },
+            "spec-includes-l": { en: "Includes", ar: "يشمل", fr: "Comprend" },
+            "spec-includes-v": { en: "Custom vector logo (AI/EPS/PDF, print & web files)", ar: "شعار متّجه مخصص (ملفات AI وEPS وPDF للطباعة والويب)", fr: "Logo vectoriel sur mesure (fichiers AI/EPS/PDF, impression & web)" },
+            "spec-stock-l": { en: "Stock", ar: "نوع الورق", fr: "Papier" },
+            "spec-stock-v": { en: "350gsm silk or matte, or 400gsm uncoated cotton", ar: "ورق حريري أو مطفي 350غ، أو ورق قطني غير مطلي 400غ", fr: "Couché soie ou mat 350 g, ou coton non couché 400 g" },
+            "spec-finish-l": { en: "Finish", ar: "التشطيب", fr: "Finition" },
+            "spec-finish-v": { en: "Silk/matte stock: matte or soft-touch lamination + optional spot UV. Cotton stock: natural uncoated finish, optional colored edges.", ar: "الورق الحريري/المطفي: تصفيح مطفي أو ناعم + طلاء UV موضعي اختياري. الورق القطني: تشطيب طبيعي غير مطلي، مع حواف ملوّنة اختيارية.", fr: "Papier soie/mat : pelliculage mat ou soft-touch + vernis sélectif en option. Papier coton : finition naturelle non couchée, tranches colorées en option." },
+            "spec-color-l": { en: "Color mode", ar: "نظام الألوان", fr: "Mode colorimétrique" },
+            "spec-color-v": { en: "CMYK · 3 mm bleed · calibrated hard proof before print", ar: "CMYK · حواف 3 مم · نموذج طباعة معايَر قبل التنفيذ", fr: "CMJN · fond perdu 3 mm · épreuve contractuelle calibrée avant impression" },
+            "spec-qty-l": { en: "Quantity", ar: "الكمية", fr: "Quantité" },
+            "spec-qty-v": { en: "250 / 500 / 1000 cards", ar: "250 / 500 / 1000 بطاقة", fr: "250 / 500 / 1000 cartes" },
+            "spec-turn-l": { en: "Turnaround", ar: "مدة التنفيذ", fr: "Délai" },
+            "spec-turn-v": { en: "3–5 business days", ar: "من 3 إلى 5 أيام عمل", fr: "3 à 5 jours ouvrables" },
+            "ticket-cta-p": { en: "Get exact pricing for your stock, finish, and quantity.", ar: "احصل على السعر الدقيق حسب نوع الورق والتشطيب والكمية.", fr: "Obtenez un tarif exact selon votre papier, votre finition et votre quantité." },
+            "get-price": { en: "Get a Price", ar: "اطلب السعر", fr: "Obtenir un tarif" },
+            "no-obligation": { en: "No obligation quote", ar: "عرض سعر بدون التزام", fr: "Devis sans engagement" },
+            "proof-line": { en: "You'll see a color proof before we print a single card.", ar: "سترى إثبات ألوان قبل طباعة أي بطاقة.", fr: "Vous validez une épreuve couleur avant que nous imprimions la moindre carte." },
+            "services-title": { en: "What We Design & Print", ar: "ما نصمّمه ونطبعه", fr: "Ce que nous concevons & imprimons" },
+            "services-sub": { en: "Every job moves from design through prepress to final production under one roof.", ar: "كل طلب يمر من التصميم إلى ما قبل الطباعة وصولًا إلى الإنتاج النهائي تحت سقف واحد.", fr: "Chaque projet passe du design au prépresse jusqu'à la production finale, sous un même toit." },
+            "s1-h": { en: "Graphic & Prepress Design", ar: "التصميم الجرافيكي والتجهيز لما قبل الطباعة", fr: "Design graphique & prépresse" },
+            "s1-p": { en: "Custom vector work in Illustrator, Photoshop, and InDesign — logos, flyers, posters, and brand guides delivered print-ready.", ar: "أعمال متّجهة مخصصة عبر Illustrator وPhotoshop وInDesign — شعارات ومنشورات وملصقات وأدلة هوية بصرية جاهزة للطباعة.", fr: "Travail vectoriel sur mesure sous Illustrator, Photoshop et InDesign — logos, flyers, affiches et chartes graphiques livrés prêts à imprimer." },
+            "s2-h": { en: "Packaging & Product Labels", ar: "التغليف وملصقات المنتجات", fr: "Packaging & étiquettes produit" },
+            "s2-p": { en: "Die-cut sticker labels, jar and bottle wraps, and box dielines engineered to fit your product's exact dimensions.", ar: "ملصقات مقصوصة بدقة، وأغلفة للعلب والقناني، ومخططات صناديق مصمَّمة لتناسب أبعاد منتجك بدقة.", fr: "Étiquettes autocollantes découpées à la forme, habillages de pots et de bouteilles, et tracés de découpe d'emballages ajustés aux dimensions exactes de votre produit." },
+            "s3-h": { en: "Business Stationery", ar: "القرطاسية المهنية", fr: "Papeterie d'entreprise" },
+            "s3-p": { en: "Business cards, letterheads, and envelopes on premium stocks, with foil stamping, embossing, or spot UV finishing.", ar: "بطاقات عمل وورق رسمي وأظرفة على ورق فاخر، مع تذهيب أو نقش بارز أو طلاء UV موضعي.", fr: "Cartes de visite, papiers à en-tête et enveloppes sur papiers haut de gamme, avec dorure à chaud, gaufrage ou vernis sélectif." },
+            "s4-h": { en: "Brochures & Catalogs", ar: "الكتيبات والكاتالوجات", fr: "Brochures & catalogues" },
+            "s4-p": { en: "Multi-page booklets and folded flyers, saddle-stitched or perfect-bound, with color-managed prepress throughout.", ar: "كتيبات متعددة الصفحات ومنشورات مطوية، بتجليد دبوس أو تجليد لاصق، مع إدارة دقيقة للألوان في كل مراحل التجهيز.", fr: "Livrets multipages et dépliants, en piqûre à cheval ou dos carré collé, avec gestion des couleurs à chaque étape du prépresse." },
+            "s5-h": { en: "Large Format & Signage", ar: "الطباعة الكبيرة واللافتات", fr: "Grand format & enseignes" },
+            "s5-p": { en: "Vinyl banners, PVC/forex boards, canvas, and mesh — shop fronts, street stands, and event signage cut and finished on-site.", ar: "لافتات فينيل، وألواح PVC/فوركس، وقماش كانفاس، وشبك — واجهات محلات وأكشك ولافتات فعاليات، تُقص وتُشطَّب لدينا.", fr: "Banderoles en vinyle, panneaux PVC/Forex, toile et bâche micro-perforée — devantures, stands et signalétique événementielle découpés et finis sur place." },
+            "s6-h": { en: "Prepress & Color Management", ar: "التجهيز لما قبل الطباعة وإدارة الألوان", fr: "Prépresse & gestion des couleurs" },
+            "s6-p": { en: "RGB-to-CMYK conversion, bleed and trim setup, imposition, and physical proofing so the print matches the screen.", ar: "تحويل من RGB إلى CMYK، وضبط الحواف والقص، وترتيب الصفحات، وإثبات طباعة فعلي لضمان تطابق الطباعة مع الشاشة.", fr: "Conversion RVB vers CMJN, mise en place des fonds perdus et du rognage, imposition et épreuves physiques pour que l'impression corresponde à l'écran." },
+            "file-title": { en: "Sending Us a File?", ar: "هل سترسل لنا ملفًا؟", fr: "Vous nous envoyez un fichier ?" },
+            "file-sub": { en: "Here's what we need for a clean, on-color print run — we're happy to check your file before it goes to press.", ar: "إليك ما نحتاجه لطباعة نظيفة ودقيقة الألوان — يسعدنا فحص ملفك قبل إرساله للطباعة.", fr: "Voici ce qu'il nous faut pour une impression nette et fidèle en couleur — nous vérifions volontiers votre fichier avant le passage sous presse." },
+            "f1-l": { en: "Resolution", ar: "الدقة", fr: "Résolution" },
+            "f1-h": { en: "300 DPI minimum", ar: "300 نقطة/بوصة كحد أدنى", fr: "300 DPI minimum" },
+            "f1-p": { en: "300 DPI at final size for photos; logos and text as vector for crisp edges at any scale.", ar: "300 نقطة/بوصة بالحجم النهائي للصور؛ والشعارات والنصوص كملفات متّجهة لحواف حادة بأي حجم.", fr: "300 DPI à la taille finale pour les photos ; logos et textes en vectoriel pour des contours nets à toute échelle." },
+            "f2-l": { en: "Color mode", ar: "نظام الألوان", fr: "Mode colorimétrique" },
+            "f2-h": { en: "CMYK, not RGB", ar: "CMYK وليس RGB", fr: "CMJN, pas RVB" },
+            "f2-p": { en: "We convert and soft-proof in CMYK, then confirm color on a hard proof before the run — no surprises on press.", ar: "نحوّل ونعاين الألوان بنظام CMYK، ثم نؤكّدها على نموذج طباعة فعلي قبل السحب — دون مفاجآت على الآلة.", fr: "Nous convertissons et contrôlons les couleurs en CMJN, puis nous les validons sur une épreuve contractuelle avant le tirage — aucune surprise sous presse." },
+            "f3-l": { en: "Bleed & margins", ar: "الحواف والهوامش", fr: "Fond perdu & marges" },
+            "f3-h": { en: "3mm bleed / 5mm safe area", ar: "امتداد 3مم / هامش أمان 5مم", fr: "Fond perdu 3 mm / zone de sécurité 5 mm" },
+            "f3-p": { en: "Keeps background color running to the trim edge and text away from the cut line.", ar: "يضمن امتداد لون الخلفية حتى حافة القص وإبعاد النص عن خط القص.", fr: "Permet à la couleur de fond d'aller jusqu'au bord de coupe et éloigne le texte de la ligne de découpe." },
+            "f4-l": { en: "File formats", ar: "صيغ الملفات", fr: "Formats de fichier" },
+            "f4-h": { en: "Print-ready PDF (PDF/X-1a)", ar: "PDF جاهز للطباعة (PDF/X-1a)", fr: "PDF prêt à imprimer (PDF/X-1a)" },
+            "f4-p": { en: "Fonts outlined or embedded, images embedded at 300 DPI. AI/EPS or flattened TIFF also accepted.", ar: "الخطوط محوّلة إلى مسارات أو مضمّنة، والصور مضمّنة بدقة 300 نقطة/بوصة. نقبل أيضًا AI/EPS أو TIFF مسطّح.", fr: "Polices vectorisées ou incorporées, images incorporées en 300 DPI. AI/EPS ou TIFF aplati également acceptés." },
+            "f5-l": { en: "Ink coverage", ar: "تغطية الحبر", fr: "Taux d'encrage" },
+            "f5-h": { en: "Max TAC 300%", ar: "حد الحبر الأقصى 300٪", fr: "TAC max. 300 %" },
+            "f5-p": { en: "Keep total area coverage at or under 300% on coated stock so solids dry clean and don't offset.", ar: "أبقِ إجمالي تغطية الحبر عند 300٪ أو أقل على الورق المطلي لتجفّ المساحات الصلبة نظيفة دون تلطّخ.", fr: "Maintenez le taux d'encrage total à 300 % ou moins sur papier couché pour que les aplats sèchent proprement, sans maculage." },
+            "f6-l": { en: "Color management", ar: "إدارة الألوان", fr: "Gestion des couleurs" },
+            "f6-h": { en: "ICC-managed, FOGRA39", ar: "مُدارة بـ ICC، معيار FOGRA39", fr: "Géré ICC, FOGRA39" },
+            "f6-p": { en: "Coated jobs profiled to ISO Coated v2 (FOGRA39). Send RGB and we handle the separation, or supply CMYK to profile.", ar: "الأعمال على الورق المطلي معايَرة وفق ISO Coated v2 (FOGRA39). أرسل RGB ونتكفّل بالفصل اللوني، أو زوّدنا بملف CMYK حسب البروفايل.", fr: "Travaux sur couché profilés selon ISO Coated v2 (FOGRA39). Envoyez du RVB et nous gérons la séparation, ou fournissez du CMJN selon le profil." },
+            "press-guar-l": { en: "Press guarantee", ar: "ضمان الطباعة", fr: "Garantie impression" },
+            "press-guar-p": { en: "Nothing goes on press until you approve a proof. Digital soft-proof on every job; hard proof on request for color-critical work.", ar: "لا شيء يُطبع قبل موافقتك على النموذج. نموذج رقمي في كل طلب، ونموذج مطبوع عند الطلب للأعمال الحساسة لونيًا.", fr: "Rien ne part sous presse tant que vous n'avez pas validé une épreuve. Épreuve numérique sur chaque projet ; épreuve papier sur demande pour les travaux exigeants en couleur." },
+            "portfolio-title": { en: "Recent Print Work", ar: "أعمال طباعة حديثة", fr: "Travaux d'impression récents" },
+            "p1-h": { en: "Visual Brand Identity", ar: "الهوية البصرية للعلامة", fr: "Identité visuelle de marque" },
+            "p1-p": { en: "Logo Conception & Vector Mockups", ar: "تصميم الشعار ونماذج متّجهة", fr: "Conception de logo & maquettes vectorielles" },
+            "p2-h": { en: "Product Labeling", ar: "ملصقات المنتجات", fr: "Étiquetage produit" },
+            "p2-p": { en: "Die-Cut Stickers & Packaging Print", ar: "ملصقات مقصوصة وطباعة تغليف", fr: "Stickers découpés à la forme & impression packaging" },
+            "p3-h": { en: "Premium Business Stationery", ar: "قرطاسية مهنية فاخرة", fr: "Papeterie d'entreprise premium" },
+            "p3-p": { en: "Foil Stamping & Spot UV Finishing", ar: "تذهيب وطلاء UV موضعي", fr: "Dorure à chaud & finition vernis sélectif" },
+            "p4-h": { en: "Large Format Signage", ar: "لافتات كبيرة الحجم", fr: "Enseignes grand format" },
+            "p4-p": { en: "Posters, Banners & Vinyl Prints", ar: "ملصقات ولافتات وطباعة فينيل", fr: "Affiches, banderoles & impressions vinyle" },
+            "tst-title": { en: "What Clients Say", ar: "ماذا يقول عملاؤنا", fr: "Ce que disent nos clients" },
+            "tst-sub": { en: "A few words from azil.ma print clients. (Placeholders — replace with real ones.)", ar: "بعض كلمات من عملاء الطباعة لدى azil.ma. (نصوص توضيحية — استبدلها بآراء حقيقية.)", fr: "Quelques mots de clients impression d'azil.ma. (Exemples — à remplacer par de vrais avis.)" },
+            "tst-slip": { en: "Proof — Approved", ar: "نموذج — معتمد", fr: "Épreuve — Validée" },
+            "tst-stamp": { en: "APPROVED ✓", ar: "مُعتمد ✓", fr: "VALIDÉ ✓" },
+            "tst1-p": { en: "\"The business cards came out exactly like the proof — clean spot UV and perfect color. Very professional.\"", ar: "«خرجت بطاقات العمل مطابقة تمامًا للنموذج — طلاء UV نظيف وألوان مضبوطة. احترافية عالية.»", fr: "« Les cartes de visite sont sorties exactement comme l'épreuve — vernis sélectif net et couleurs parfaites. Très professionnel. »" },
+            "tst1-n": { en: "Khalid", ar: "خالد", fr: "Khalid" }, "tst1-r": { en: "Shop owner, Agadir", ar: "صاحب محل، أكادير", fr: "Commerçant, Agadir" },
+            "tst2-p": { en: "\"They fixed my file's bleed and CMYK before printing my labels. Saved me a costly reprint.\"", ar: "«ضبطوا حواف ملفي ونظام CMYK قبل طباعة ملصقاتي. وفّروا عليّ إعادة طباعة مكلفة.»", fr: "« Ils ont corrigé le fond perdu et le CMJN de mon fichier avant d'imprimer mes étiquettes. Ça m'a évité une réimpression coûteuse. »" },
+            "tst2-n": { en: "Nadia", ar: "نادية", fr: "Nadia" }, "tst2-r": { en: "Cosmetics brand", ar: "علامة مستحضرات تجميل", fr: "Marque de cosmétiques" },
+            "tst3-p": { en: "\"Banners and signage delivered on time and cut clean. The whole storefront looks sharp now.\"", ar: "«لافتات ولوحات وصلت في وقتها ومقصوصة بدقة. أصبحت واجهة المحل أنيقة جدًا.»", fr: "« Banderoles et enseignes livrées à temps et découpées nettement. Toute la devanture a maintenant fière allure. »" },
+            "tst3-n": { en: "Youssef", ar: "يوسف", fr: "Youssef" }, "tst3-r": { en: "Restaurant, Inezgane", ar: "مطعم، إنزكان", fr: "Restaurant, Inezgane" },
+            "faq-title": { en: "Prepress FAQ", ar: "أسئلة شائعة حول التجهيز", fr: "FAQ prépresse" },
+            "faq1-q": { en: "What file format should I send?", ar: "ما صيغة الملف التي أرسلها؟", fr: "Quel format de fichier dois-je envoyer ?" },
+            "faq1-a": { en: "Print-ready PDF (PDF/X-1a) is best, or vector AI/EPS. High-res TIFF works for photo work. We check every file before press.", ar: "الأفضل ملف PDF جاهز للطباعة (PDF/X-1a)، أو ملف متّجه AI/EPS. وTIFF عالي الدقة للصور. نفحص كل ملف قبل الطباعة.", fr: "Un PDF prêt à imprimer (PDF/X-1a) est idéal, ou un fichier vectoriel AI/EPS. Le TIFF haute résolution convient pour les photos. Nous vérifions chaque fichier avant impression." },
+            "faq2-q": { en: "Do you convert my RGB files to CMYK?", ar: "هل تحوّلون ملفاتي من RGB إلى CMYK؟", fr: "Convertissez-vous mes fichiers RVB en CMJN ?" },
+            "faq2-a": { en: "Yes. We convert and soft-proof in CMYK, then confirm on a proof before the run — no surprises on press.", ar: "نعم. نحوّل ونعاين بنظام CMYK، ثم نؤكّد على نموذج قبل السحب — دون مفاجآت على الآلة.", fr: "Oui. Nous convertissons et contrôlons les couleurs en CMJN, puis nous validons sur une épreuve avant le tirage — aucune surprise sous presse." },
+            "faq3-q": { en: "How long does a print job take?", ar: "كم يستغرق تنفيذ الطلب؟", fr: "Combien de temps prend un travail d'impression ?" },
+            "faq3-a": { en: "Most jobs are ready in 3–5 business days after proof approval, depending on quantity and finish.", ar: "تُنجز أغلب الطلبات خلال 3 إلى 5 أيام عمل بعد اعتماد النموذج، حسب الكمية والتشطيب.", fr: "La plupart des travaux sont prêts en 3 à 5 jours ouvrables après validation de l'épreuve, selon la quantité et la finition." },
+            "faq4-q": { en: "Can you deliver outside Agadir?", ar: "هل توصّلون خارج أكادير؟", fr: "Livrez-vous en dehors d'Agadir ?" },
+            "faq4-a": { en: "Yes. Pick up in Agadir or we ship anywhere in Morocco. Message us your area on WhatsApp.", ar: "نعم. الاستلام في أكادير أو نشحن إلى أي مكان في المغرب. راسلنا بمنطقتك على واتساب.", fr: "Oui. Retrait à Agadir ou expédition partout au Maroc. Indiquez-nous votre secteur sur WhatsApp." },
+            "faq-ask": { en: "Ask on WhatsApp", ar: "اسأل على واتساب", fr: "Demander sur WhatsApp" },
+            "cta-h": { en: "Ready to Put Your Brand on Paper?", ar: "هل أنت مستعد لطباعة علامتك التجارية؟", fr: "Prêt à imprimer votre marque ?" },
+            "cta-p": { en: "Whether it's a new logo, printed labels, or a full signage set, send us your project on WhatsApp for a fast quote and prepress check.", ar: "سواء كان شعارًا جديدًا أو ملصقات مطبوعة أو مجموعة لافتات كاملة، أرسل لنا مشروعك عبر واتساب للحصول على عرض سعر سريع وفحص للملف.", fr: "Qu'il s'agisse d'un nouveau logo, d'étiquettes imprimées ou d'un jeu complet d'enseignes, envoyez-nous votre projet sur WhatsApp pour un devis rapide et une vérification prépresse." },
+            "cta-btn": { en: "Chat with Us (+212 632-674548)", ar: "تواصل معنا (212 632-674548+)", fr: "Discuter avec nous (+212 632-674548)" },
+            "footer": { en: "© 2026 AZIL.MA — DESIGN & PRINT PRODUCTION — AGADIR, MOROCCO", ar: "© 2026 AZIL.MA — التصميم والإنتاج الطباعي — أكادير، المغرب", fr: "© 2026 AZIL.MA — DESIGN & IMPRESSION — AGADIR, MAROC" }
         };
 
         function applyWaLinks(lang) {
             document.querySelectorAll('[data-wa-en]').forEach(function (el) {
-                const msg = lang === 'ar' ? el.getAttribute('data-wa-ar') : el.getAttribute('data-wa-en');
+                const msg = el.getAttribute('data-wa-' + lang) || el.getAttribute('data-wa-en');
                 el.setAttribute('href', 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg));
             });
         }
 
         function setLanguage(lang) {
+            if (!['en','fr','ar'].includes(lang)) lang = 'en';
             document.querySelectorAll('[data-i18n]').forEach(function (el) {
                 const key = el.getAttribute('data-i18n');
                 const t = translations[key];
@@ -876,38 +919,41 @@
 
             const html = document.getElementById('html-root');
             html.setAttribute('lang', lang);
-            html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');   // en + fr = ltr
             document.body.classList.toggle('lang-ar', lang === 'ar');
-            document.getElementById('langToggle').textContent = lang === 'ar' ? 'English' : 'العربية';
 
-            document.title = lang === 'ar'
-              ? 'azil.ma | تصميم وإنتاج طباعي — أكادير، المغرب'
-              : 'azil.ma | Print Production & Graphic Design — Agadir, Morocco';
+            document.querySelectorAll('.lang-seg-btn').forEach(function (b) {
+                b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+            });
+
+            document.title =
+                lang === 'ar' ? 'azil.ma | تصميم وإنتاج طباعي — أكادير، المغرب' :
+                lang === 'fr' ? 'azil.ma | Design graphique & Impression — Agadir, Maroc' :
+                                'azil.ma | Print Production & Graphic Design — Agadir, Morocco';
+
             const md = document.querySelector('meta[name="description"]');
             if (md && translations['meta-desc']) md.setAttribute('content', translations['meta-desc'][lang]);
             const tt = document.getElementById('themeToggle');
-            if (tt) tt.setAttribute('aria-label', lang === 'ar' ? 'تبديل الوضع الداكن' : 'Toggle dark mode');
+            if (tt) tt.setAttribute('aria-label',
+                lang === 'ar' ? 'تبديل الوضع الداكن' : lang === 'fr' ? 'Basculer le mode sombre' : 'Toggle dark mode');
             const waf = document.querySelector('.wa-float');
-            if (waf) waf.setAttribute('aria-label', lang === 'ar' ? 'تحدّث معنا عبر واتساب' : 'Chat with us on WhatsApp');
+            if (waf) waf.setAttribute('aria-label',
+                lang === 'ar' ? 'تحدّث معنا عبر واتساب' : lang === 'fr' ? 'Discuter avec nous sur WhatsApp' : 'Chat with us on WhatsApp');
 
-            if (lang === 'ar' && !document.getElementById('cairo-font')) {
-                const l = document.createElement('link'); l.id = 'cairo-font'; l.rel = 'stylesheet';
-                l.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&display=swap';
+            if (lang === 'ar' && !document.getElementById('ar-font')) {
+                const l = document.createElement('link'); l.id = 'ar-font'; l.rel = 'stylesheet';
+                l.href = 'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap';
                 document.head.appendChild(l);
             }
 
             try { localStorage.setItem('azilLang', lang); } catch (e) {}
         }
 
-        function toggleLang() {
-            const current = document.getElementById('html-root').getAttribute('lang');
-            setLanguage(current === 'ar' ? 'en' : 'ar');
-        }
-
         // meta-desc key (not bound to a visible element)
         translations["meta-desc"] = {
             en: "azil.ma — graphic design & print production in Agadir, Morocco. Print-ready logos, business cards, packaging labels, brochures & large-format signage. CMYK color management, fast WhatsApp quotes.",
-            ar: "azil.ma — تصميم جرافيكي وإنتاج طباعي في أكادير، المغرب. شعارات وبطاقات عمل وملصقات وكتيبات ولافتات كبيرة جاهزة للطباعة. إدارة ألوان CMYK وعروض سعر سريعة عبر واتساب."
+            ar: "azil.ma — تصميم جرافيكي وإنتاج طباعي في أكادير، المغرب. شعارات وبطاقات عمل وملصقات وكتيبات ولافتات كبيرة جاهزة للطباعة. إدارة ألوان CMYK وعروض سعر سريعة عبر واتساب.",
+            fr: "azil.ma — design graphique & production d'impression à Agadir, Maroc. Logos prêts à imprimer, cartes de visite, étiquettes packaging, brochures & enseignes grand format. Gestion des couleurs CMJN, devis rapides sur WhatsApp."
         };
 
         (function initLang() {
