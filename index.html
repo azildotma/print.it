@@ -242,8 +242,31 @@ html[dir="rtl"] .docket li span:first-child{letter-spacing:0;text-transform:none
 .units-stage{height:100vh;min-height:600px;display:flex;flex-direction:column;justify-content:center;}
 .units-track{display:flex;gap:clamp(2rem,6vw,6rem);width:max-content;align-items:center;will-change:transform;}
 @media(max-width:760px){
-  #units{overflow-x:auto;}
-  .units-stage{height:auto;min-height:0;}
+  /* mobile: no horizontal pin-rail — stack units as a legible vertical list */
+  #units{overflow:visible;}
+  #units.rail-live{overflow:visible;}
+  .units-stage{height:auto;min-height:0;padding:3.5rem 0;}
+  .units-track{flex-direction:column;align-items:stretch;width:auto;gap:0;transform:none!important;
+    padding-inline:clamp(20px,5vw,52px);box-sizing:border-box;max-width:100%;}
+  #units .unit{
+    font-size:clamp(1.5rem,6.4vw,2.2rem);
+    line-height:1.1;white-space:normal;overflow-wrap:anywhere;
+    /* filled + legible on mobile (no active-state driver here) */
+    color:var(--paper);-webkit-text-stroke:0;text-stroke:0;
+    padding:1rem 0;border-block-end:1px solid var(--mark);
+    display:flex;align-items:center;gap:.7rem;
+  }
+  .units-track .unit:first-child{border-block-start:1px solid var(--mark);}
+  /* CMYK index tick before each unit for print-shop flavor */
+  #units .unit::before{
+    content:"";flex:0 0 auto;width:10px;height:10px;border-radius:2px;margin-block-start:.55em;
+    background:var(--c);box-shadow:0 0 10px rgba(0,174,239,.5);
+  }
+  #units .units-track .unit:nth-child(2)::before{background:var(--m);box-shadow:0 0 10px rgba(236,0,140,.5);}
+  #units .units-track .unit:nth-child(3)::before{background:var(--y);box-shadow:0 0 10px rgba(255,242,0,.4);}
+  #units .units-track .unit:nth-child(4)::before{background:var(--blue-glow);box-shadow:0 0 10px rgba(42,140,255,.5);}
+  #units .units-track .unit:nth-child(5)::before{background:var(--c);box-shadow:0 0 10px rgba(0,174,239,.5);}
+  #units .units-track .unit:nth-child(6)::before{background:var(--m);box-shadow:0 0 10px rgba(236,0,140,.5);}
 }
 .unit{font-family:var(--font-display);font-size:clamp(3rem,13vw,11rem);text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px var(--mark);text-stroke:1.5px var(--mark);white-space:nowrap;transition:color .3s,-webkit-text-stroke-color .3s;}
 html[dir="rtl"] .unit{text-transform:none;}
